@@ -154,4 +154,24 @@
   background: linear-gradient(90deg, #18aac8, #9060d6);
 }
 
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-slide {
+  animation: slide 25s  infinite ease-in-out;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.infinite {
+  display: flex;
+}
 
