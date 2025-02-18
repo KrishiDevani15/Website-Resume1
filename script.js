@@ -1,23 +1,36 @@
+async function submitForm() {
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const message = document.getElementById('message').value;
 
-document.getElementById("submitBtn").addEventListener("click", function(event) {
-event.preventDefault();
+  // Validate if all fields are filled
+  if (!name || !email || !message) {
+      alert("Please fill all fields.");
+      return;
+  }
 
-var name = document.getElementById("name").value;
-var email = document.getElementById("email").value;
-var message = document.getElementById("message").value;
+  const formData = { name, email, message };
 
-var errorMsg = document.getElementById("errorMsg");
+  try {
+      // Sending data to FastAPI backend
+      const response = await fetch('http://127.0.0.1:8000/submit-form', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+      });
 
-// Simple form validation
-if (name === "" || email === "" || message === "") {
-  errorMsg.textContent = "Please fill out all fields.";
-} else {
-  // Here you can add code to submit the form or perform further actions
-  alert("Form submitted successfully!");
-  // Reset the form after submission (optional)
-  document.getElementById("name").value = "";
-  document.getElementById("email").value = "";
-  document.getElementById("message").value = "";
-  errorMsg.textContent = ""; // Clear any previous error message
+      const result = await response.json();
+
+      if (response.ok) {
+          alert(result.message);  // Success message
+      } else {
+          alert(result.detail || "Something went wrong.");
+      }
+
+  } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("An error occurred. Please try again later.");
+  }
 }
-});
